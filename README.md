@@ -1,34 +1,36 @@
-# O My FatalError
+# hoo-river
 
-## Note on context
-> In Iran, the internet has been cut off since February 28th. To keep my sanity and endure life within these walls, I turned to coding. I spent this time learning Rust and working toward the goals of this project. The internet remains blocked, but I have managed to push this repository.
 
-A Rust-based user-space utility exploring Linux systems programming.
+> **Note on context:** In Iran, the internet has been cut off since February 28th. To keep my sanity and endure life within these walls, I turned to coding. I spent this time learning Rust and recreating the game of my childhood. The internet remains blocked, but I have managed to push this repository.
 
-## Overview
-This project is a personal exploration into Linux systems programming using Rust. It operates entirely in user space, leveraging Rust's safety and performance features to interact with Linux system interfaces. The goal is to deepen understanding of how user-space applications communicate with the Linux kernel via system calls.
+A tiny retro-style arcade game built with **Rust**. 
 
-## Motivation
-This project is driven by a strong desire to learn:
-- **Systems Programming:** Understanding Linux kernel interactions through user-space code.
-- **Rust:** Mastering safe, efficient, and idiomatic Rust for low-level programming.
-- **Linux Architecture:** Gaining insight into process management, file I/O, and system calls.
+This project is primarily a Rust playground: experimenting with game-loop structure, input handling, timing, and clean organization in a small codebase—while keeping the vibe of old Atari games.
+...
 
-In addition, the core motivation is also to build and evolve a small, well-structured Rust/Linux component over time—so that it could eventually become open-source and invite community collaboration.
+A tiny retro-style arcade game built with **Rust**.
 
-## Status
-🚧 **Work in Progress.** Currently a personal learning project. Focused on experimenting with system calls, error handling, and kernel interactions.
+This project is primarily a Rust playground: experimenting with game-loop structure, input handling, timing, and clean organization in a small codebase—while keeping the vibe of old Atari games.
 
-## Roadmap
-- [ ] Implement essential system interactions.
-- [ ] Improve error handling and robustness.
-- [ ] Add documentation and inline comments.
-- [ ] Modularize and optimize the codebase.
-- [ ] Prepare for open-source release and community feedback.
-
-## Contribution
-Since this is a learning project, I welcome any advice, insights, or suggestions from the community. Feedback on architecture, Rust idioms, or Linux system call usage would be greatly appreciated!
+> **Note:** Gameplay is intentionally simple and retro. The goal is learning Rust while building something that feels like a game.
 
 ---
 
-*Built with [Rust](https://www.rust-lang.org/)*
+## Features
+
+- Retro-inspired gameplay (Atari-like feel)
+- A Rust-first codebase (ownership, borrowing, modules, and state management)
+- Clear game loop structure
+- Frame/update timing and deterministic-ish logic
+- Input handling and basic UI feedback (score/state)
+
+---
+
+## How to Run
+
+### Requirements
+- Rust + Cargo
+
+### Build & Run
+```bash
+cargo run
