@@ -20,6 +20,10 @@ struct  Enemy{
   c:u16
 }
 
+struct  Fuel{
+    l:u16,
+    c:u16
+}
 struct Bullet{
     l:u16,
     c:u16,
@@ -36,8 +40,9 @@ struct World{
     next_end:u16,
     enemy:Vec<Enemy>,
     bullet:Vec<Bullet>,
-    fuel:u16,
-    score:u16
+    gas:u16,
+    score:u16,
+    fuel:Vec<Fuel>
 }
 
 fn draw(mut sc: &Stdout,mut world: &World)->std::io::Result<()>{
@@ -54,12 +59,16 @@ fn draw(mut sc: &Stdout,mut world: &World)->std::io::Result<()>{
     sc.queue(MoveTo(2,2))?;
     sc.queue(Print(format!("Score:{}",world.score)))?;
     sc.queue(MoveTo(2,3))?;
-    sc.queue(Print(format!("Fuel:{}",world.fuel)))?;
+    sc.queue(Print(format!("Gas:{}",world.gas)))?;
 
    for e in &world.enemy{
         sc.queue(MoveTo(e.c,e.l as u16))?;
          sc.queue(Print("E"))?;
   
+   }
+   for f in &world.fuel   {
+       sc.queue(MoveTo(f.c,f.l as u16))?;
+       sc.queue(Print("F"))?;
    }
 
    for b in &world.bullet{
@@ -78,12 +87,23 @@ fn draw(mut sc: &Stdout,mut world: &World)->std::io::Result<()>{
 }
 
 fn physics(mut world:World)->std::io::Result<World>{
-    if world.fuel<=0{
+    if world.gas<=0{
         world.died=true;
     }
     if world.player_c <= world.map[world.player_l as usize].0||
         world.player_c>=world.map[world.player_l as usize].1{
         world.died=true;
+    }
+    for i in (0..world.fuel.len()).rev(){
+        if world.fuel[i].l==world.player_l&&world.fuel[i].c==world.player_c{
+            world.gas+=10;
+        }
+        for j in (0..world.bullet.len()).rev(){
+            if (world.bullet[j].l==world.fuel[i].l ||world.bullet[j].l-1==world.fuel[i].l)&&world.bullet[j].c==world.fuel[i].c{
+                world.fuel.remove(i);
+                world.score+=10;
+            }
+        }
     }
 
     for i in (0..world.enemy.len()).rev(){
@@ -151,6 +171,15 @@ for i in (0..world.enemy.len()).rev(){
     }
 }
 
+for i in (0..world.fuel.len()).rev(){
+
+    if world.fuel[i].l<world.maxl{
+        world.fuel[i].l+=1;
+    }else{
+        world.fuel.remove(i);
+    }
+}
+
     if rng.gen_range(0..10)>=9{
         let new_c=rng.gen_range(world.map[0].0..world.map[1].1);
 
@@ -159,12 +188,24 @@ for i in (0..world.enemy.len()).rev(){
             l:0
         })
     }
-    if world.fuel>=1{
-    world.fuel-=1;
+
+    if rng.gen_range(0..10)>7{
+        let new_c_f=rng.gen_range(world.map[0].0..world.map[1].1);
+        if new_c_f>0{
+        world.fuel.push(Fuel{
+            c:new_c_f,
+            l:0
+        })
+    }
+    }
+    if world.gas>=1{
+    world.gas-=1;
 
     }
  Ok(world)
 }
+
+
 fn main() -> std::io::Result<()>{
     let mut sc:Stdout = stdout();
     let (maxc,maxl)=size().unwrap();
@@ -188,8 +229,10 @@ fn main() -> std::io::Result<()>{
         next_end:maxc/2+25,
         enemy:vec![],
         bullet:vec![],
-        fuel:10,
-        score:0
+        gas:100,
+        score:0,
+        fuel:vec![]
+
 
     };
 
